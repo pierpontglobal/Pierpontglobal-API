@@ -93,9 +93,9 @@ module Api
           selector_params[:trim] = clean_array(params[:trim]) if params[:trim].present?
           selector_params[:year] = clean_array(params[:year]) if params[:year].present?
           selector_params[:release] = { gte: (release - 7), lte: release }
-          selector_params[:sale_date] = { gt: Time.now }
+          # selector_params[:sale_date] = { gt: Time.now }
 
-          cars = ::Car.search(params[:q],
+          search_results = ::Car.search(params[:q],
                               fields: [:car_search_identifiers],
                               limit: params[:limit],
                               boost_by: { condition_report: { factor: 5 }, release: { factor: 10 } },
@@ -104,11 +104,15 @@ module Api
                               operator: 'or',
                               scope_results: ->(r) { r.sanitized },
                               aggs: %i[engine doors car_type maker_name model_name body_type fuel transmission odometer color trim year release],
-                              where: selector_params)
+                              where: selector_params
+                            )
 
-          render json: { size: cars.total_count,
-                         cars: cars.map(&:create_structure),
-                         available_arguments: cars.aggs }, status: :ok
+          car_ids = search_results.map(&:id)
+          cars = ::Car.sanitized.where(id: car_ids)
+
+          render json: { size: search_results.total_count,
+                         available_arguments: search_results.aggs ,
+                         cars: cars.map(&:create_structure)}, status: :ok
         end
 
         # CAR STATE HISTORY CONTROLLER

@@ -32,6 +32,9 @@ gem 'sinatra'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
 
+gem 'ffi', '<= 1.15.4'
+gem 'mimemagic', '>= 0.3.10'
+
 # Database gems``
 gem 'pg'
 

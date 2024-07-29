@@ -10,12 +10,21 @@ module Api
             render json: { status: 'The email is already taken' }, status: :bad_request
           else
             subscribed_user = SubscribedUser.create!(user_params)
-            render json: { status: 'Created' }, status: :created if subscribed_user
-            render json: { status: 'Something wrong happened' }, status: :bad_request unless subscribed_user
+            if subscribed_user
+              render json: { status: 'Created' }, status: :created
+              # Delay the ActionCable broadcast by 10 seconds
+              Thread.new do
+                sleep 5
+                ActionCable.server.broadcast("verification_channel_#{params[:user][:email]}", {verified: true})
+              end
+            else
+              render json: { status: 'Something wrong happened' }, status: :bad_request
+            end
           end
         rescue
           render json: { status: 'Something wrong happened' }, status: :bad_request
         end
+        
 
         def create
           user = User.create!(user_params)

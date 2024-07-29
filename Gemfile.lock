@@ -160,7 +160,9 @@ GEM
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
-    mimemagic (0.3.3)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     minfraud (1.0.4)
       faraday (~> 0.9, >= 0.9.1)
       faraday_middleware (~> 0.9, >= 0.9.1)
@@ -361,10 +363,12 @@ DEPENDENCIES
   factory_bot_rails
   faker
   faraday_middleware-aws-sigv4
+  ffi (<= 1.15.4)
   figaro
   jbuilder
   json
   listen (>= 3.0.5, < 3.2)
+  mimemagic (>= 0.3.10)
   minfraud
   net-ping
   ostruct
@@ -394,4 +398,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.16.6
+   1.17.3

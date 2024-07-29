@@ -2,8 +2,7 @@
 
 # Defines the cars model
 class Car < ApplicationRecord
-  searchkick word_middle: [:car_search_identifiers],
-             callbacks: :async
+  searchkick word_middle: [:car_search_identifiers], callbacks: :async
 
   def search_data
     {
