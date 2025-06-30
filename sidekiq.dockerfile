@@ -14,4 +14,7 @@ COPY . /sidekiq_worker
 RUN gem install bundler -v 1.17.3
 RUN bundle check || bundle install
 
-CMD bundle exec sidekiq -q $QUEUENAME -c 10
+ENV RAILS_ENV=production \
+    RACK_ENV=production
+
+CMD bundle exec sidekiq -q $QUEUENAME -e production -c 10

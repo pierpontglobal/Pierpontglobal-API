@@ -23,4 +23,7 @@ RUN bundle check || bundle install
 
 EXPOSE 3000
 
-CMD rm ./tmp/pids/*; bundle exec rails db:create; bundle exec rails db:migrate; bundle exec rails db:seed; bundle exec sidekiq -q default & bundle exec rails server -b 0.0.0.0
+ENV RAILS_ENV=production \
+    RACK_ENV=production
+
+CMD rm ./tmp/pids/*; bundle exec rails db:create; bundle exec rails db:migrate; bundle exec rails db:seed; bundle exec sidekiq -q default & bundle exec rails server -e production -b 0.0.0.0

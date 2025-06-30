@@ -32,7 +32,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :amazon
+  config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
@@ -82,13 +82,9 @@ Rails.application.configure do
       app_name = 'PierpontglobalApi'
 
       config.semantic_logger.add_appender(
-          appender: ElasticsearchAWS.new(
-              url: 'https://search-kibana-dunwccauo3hrpqnh2amsv3vofm.us-east-1.es.amazonaws.com',
-              index: 'pierpontglobal-api',
-              access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-              secrete_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-              region: ENV['AWS_REGION']
-          )
+          index: 'pierpontglobal_api',
+          appender: :elasticsearch,
+          url: "http://elasticsearch:9200"
       )
       config.log_tags = {
           ip: :remote_ip
@@ -96,6 +92,13 @@ Rails.application.configure do
       config.semantic_logger.application = app_name
     end
 
-    # ::WorkerHandler.activate
+    ActionMailer::Base.smtp_settings = {
+      user_name: 'apikey',
+      password: ENV['SENDGRID_API_KEY_SMTP'],
+      address: 'smtp.sendgrid.net',
+      port: 587,
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
   end
 end

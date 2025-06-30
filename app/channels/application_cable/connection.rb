@@ -15,8 +15,8 @@ module ApplicationCable
       verified_user = User.find_by(id: cookies.signed['user.id'])
       if verified_user && cookies.signed['user.expires_at'] > Time.now
         return verified_user
-      else
-        reject_unauthorized_connection unless self.device_identifier.present?
+      #else
+        #reject_unauthorized_connection unless self.device_identifier.present?
       end
       nil
     end
