@@ -5,6 +5,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'selenium-webdriver'
 
+# Ruby 2.7+ stdlib gems (removed from default gems)
+gem 'thwait'
+gem 'e2mmap'
+
 # Requirement compliant gems
 gem 'rb-readline'
 gem 'minfraud'

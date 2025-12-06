@@ -17,4 +17,4 @@ RUN bundle check || bundle install
 ENV RAILS_ENV=production \
     RACK_ENV=production
 
-CMD bundle exec sidekiq -q $QUEUENAME -e production -c 10
+CMD bundle exec sidekiq -q $QUEUENAME -c 10
